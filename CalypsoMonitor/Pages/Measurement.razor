@@ -46,14 +46,14 @@ else
                                     @foreach (var measurement in CalypsoService.CurrentResults.Measurements)
                                     {
                                         <tr>
-                                            <td>@measurement.Feature</td>
+                                            <td>@measurement.FeatureId</td>
                                             <td>@measurement.Nominal</td>
                                             <td>@measurement.Actual</td>
                                             <td>@measurement.Deviation</td>
                                             <td>@measurement.LowerTolerance</td>
                                             <td>@measurement.UpperTolerance</td>
                                             <td>
-                                                @if (measurement.InTolerance)
+                                                @if (measurement.UpperTolerance!=null)
                                                 {
                                                     <span class="badge bg-success">合格</span>
                                                 }

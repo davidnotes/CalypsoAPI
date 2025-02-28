@@ -94,15 +94,15 @@ namespace CalypsoMonitor.Services
 
         private void Calypso_MeasurementStarted(object? sender, MeasurementStartEventArgs e)
         {
-            AddLogEntry($"测量开始: {e.MeasurementPlanInfo.PartNumber}");
-            OnMeasurementStarted?.Invoke(e.MeasurementPlanInfo.PartNumber);
+            AddLogEntry($"测量开始: {e.MeasurementPlan.PartNumber}");
+            OnMeasurementStarted?.Invoke(e.MeasurementPlan.PartNumber);
             OnStatusChanged?.Invoke();
         }
 
         private void Calypso_MeasurementFinished(object? sender, MeasurementFinishEventArgs e)
         {
-            AddLogEntry($"测量完成: {e.MeasurementPlanInfo.PartNumber}, 公差状态: {e.MeasurementResult.ToleranceState}");
-            OnMeasurementFinished?.Invoke(e.MeasurementPlanInfo.PartNumber);
+            AddLogEntry($"测量完成: {e.MeasurementPlan.PartNumber}, 公差状态: {e.MeasurementResult}");
+            OnMeasurementFinished?.Invoke(e.MeasurementPlan.PartNumber);
             OnStatusChanged?.Invoke();
         }
 

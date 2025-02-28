@@ -89,13 +89,13 @@
         await CalypsoService.DisconnectAsync();
     }
 
-    private RenderFragment GetStatusBadge(Status status) => status switch
+    private RenderFragment GetStatusBadge(CalypsoAPI.Status status) => status switch
     {
-        Status.Running => @<span class="badge bg-primary">运行中</span>,
-        Status.Paused => @<span class="badge bg-warning">已暂停</span>,
-        Status.Finished => @<span class="badge bg-success">已完成</span>,
-        Status.Stopped => @<span class="badge bg-secondary">已停止</span>,
-        Status.Exception => @<span class="badge bg-danger">错误</span>,
+        CalypsoAPI.Status.Running => @<span class="badge bg-primary">运行中</span>,
+        CalypsoAPI.Status.Paused => @<span class="badge bg-warning">已暂停</span>,
+        CalypsoAPI.Status.Finished => @<span class="badge bg-success">已完成</span>,
+        CalypsoAPI.Status.Stopped => @<span class="badge bg-secondary">已停止</span>,
+        CalypsoAPI.Status.Exception => @<span class="badge bg-danger">错误</span>,
         _ => @<span class="badge bg-secondary">未知</span>
     };
 
