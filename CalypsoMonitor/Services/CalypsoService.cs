@@ -2,6 +2,7 @@ using CalypsoAPI;
 using CalypsoAPI.Events;
 using CalypsoAPI.Models;
 using System.Collections.ObjectModel;
+using CalypsoAPI.WebApi;
 
 namespace CalypsoMonitor.Services
 {
@@ -13,9 +14,8 @@ namespace CalypsoMonitor.Services
 
         public bool IsConnected => _calypso?.IsRunning ?? false;
         public Status CurrentStatus => _calypso?.State.Status ?? Status.Stopped;
-        public MeasurementPlan? CurrentPlan => _calypso?.State.MeasurementPlan;
-        public MeasurementInfo? CurrentMeasurement => _calypso?.State.MeasurementInfo;
-        public MeasurementResults? CurrentResults => _calypso?.State.MeasurementResults;
+        public MeasurementPlanInfo? CurrentPlan => _calypso?.State.MeasurementPlan;
+        public MeasurementResult? CurrentResults => _calypso?.State.LatestMeasurementResults;
 
         public event Action? OnStatusChanged;
         public event Action<string>? OnError;
@@ -94,15 +94,15 @@ namespace CalypsoMonitor.Services
 
         private void Calypso_MeasurementStarted(object? sender, MeasurementStartEventArgs e)
         {
-            AddLogEntry($"测量开始: {e.PartNumber}");
-            OnMeasurementStarted?.Invoke(e.PartNumber);
+            AddLogEntry($"测量开始: {e.MeasurementPlanInfo.PartNumber}");
+            OnMeasurementStarted?.Invoke(e.MeasurementPlanInfo.PartNumber);
             OnStatusChanged?.Invoke();
         }
 
         private void Calypso_MeasurementFinished(object? sender, MeasurementFinishEventArgs e)
         {
-            AddLogEntry($"测量完成: {e.PartNumber}, 公差状态: {e.ToleranceState}");
-            OnMeasurementFinished?.Invoke(e.PartNumber);
+            AddLogEntry($"测量完成: {e.MeasurementPlanInfo.PartNumber}, 公差状态: {e.MeasurementResult.ToleranceState}");
+            OnMeasurementFinished?.Invoke(e.MeasurementPlanInfo.PartNumber);
             OnStatusChanged?.Invoke();
         }
 

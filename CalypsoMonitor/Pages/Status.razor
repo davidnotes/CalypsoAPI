@@ -56,35 +56,29 @@ else
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>测量信息</h5>
+                    <h5>测量结果</h5>
                 </div>
                 <div class="card-body">
-                    @if (CalypsoService.CurrentMeasurement != null)
+                    @if (CalypsoService.CurrentResults != null)
                     {
                         <div class="mb-3">
-                            <strong>公差状态:</strong>
-                            @if (CalypsoService.CurrentMeasurement.ToleranceState)
+                            <strong>测量结果:</strong> 
+                            @if (CalypsoService.CurrentResults.Measurements.Any())
                             {
-                                <span class="badge bg-success">合格</span>
+                                <span class="badge bg-success">有数据</span>
                             }
                             else
                             {
-                                <span class="badge bg-danger">不合格</span>
+                                <span class="badge bg-warning">无数据</span>
                             }
                         </div>
                         <div class="mb-3">
-                            <strong>HDR文件路径:</strong> @CalypsoService.CurrentMeasurement.HdrPath
-                        </div>
-                        <div class="mb-3">
-                            <strong>FET文件路径:</strong> @CalypsoService.CurrentMeasurement.FetPath
-                        </div>
-                        <div class="mb-3">
-                            <strong>CHR文件路径:</strong> @CalypsoService.CurrentMeasurement.ChrPath
+                            <strong>测量项数:</strong> @CalypsoService.CurrentResults.Measurements.Count
                         </div>
                     }
                     else
                     {
-                        <div class="text-muted">暂无测量信息</div>
+                        <div class="text-muted">暂无测量结果</div>
                     }
                 </div>
             </div>
