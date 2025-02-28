@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -8,6 +7,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalypsoAPI.WebApi", "CalypsoAPI.WebApi\CalypsoAPI.WebApi.csproj", "{0CF4821E-D47E-4628-B430-3C4026BA9B5C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalypsoAPI.Test", "CalypsoAPI.Test\CalypsoAPI.Test.csproj", "{720B71BB-91B0-4749-B211-67C732AD8C73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalypsoMonitor", "CalypsoMonitor\CalypsoMonitor.csproj", "{A2F5C8F3-D7E1-4A3B-8E1A-F5C9D3B4E5F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +28,10 @@ Global
 		{720B71BB-91B0-4749-B211-67C732AD8C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{720B71BB-91B0-4749-B211-67C732AD8C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{720B71BB-91B0-4749-B211-67C732AD8C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2F5C8F3-D7E1-4A3B-8E1A-F5C9D3B4E5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2F5C8F3-D7E1-4A3B-8E1A-F5C9D3B4E5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2F5C8F3-D7E1-4A3B-8E1A-F5C9D3B4E5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2F5C8F3-D7E1-4A3B-8E1A-F5C9D3B4E5F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

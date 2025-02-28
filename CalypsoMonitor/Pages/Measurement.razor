@@ -1,0 +1,114 @@
+@page "/measurement"
+@inject CalypsoService CalypsoService
+@implements IDisposable
+
+<PageTitle>测量数据 - Calypso监控系统</PageTitle>
+
+<h1>测量数据</h1>
+
+@if (!CalypsoService.IsConnected)
+{
+    <div class="alert alert-warning">
+        <strong>未连接到Calypso!</strong> 请先在首页连接到Calypso。
+    </div>
+}
+else if (CalypsoService.CurrentResults == null)
+{
+    <div class="alert alert-info">
+        <strong>暂无测量数据!</strong> 当前没有可用的测量结果。
+    </div>
+}
+else
+{
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>测量结果</h5>
+                </div>
+                <div class="card-body">
+                    @if (CalypsoService.CurrentResults.Measurements != null && CalypsoService.CurrentResults.Measurements.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>特征</th>
+                                        <th>标称值</th>
+                                        <th>实际值</th>
+                                        <th>偏差</th>
+                                        <th>公差下限</th>
+                                        <th>公差上限</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var measurement in CalypsoService.CurrentResults.Measurements)
+                                    {
+                                        <tr>
+                                            <td>@measurement.Feature</td>
+                                            <td>@measurement.Nominal</td>
+                                            <td>@measurement.Actual</td>
+                                            <td>@measurement.Deviation</td>
+                                            <td>@measurement.LowerTolerance</td>
+                                            <td>@measurement.UpperTolerance</td>
+                                            <td>
+                                                @if (measurement.InTolerance)
+                                                {
+                                                    <span class="badge bg-success">合格</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">不合格</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">暂无测量数据</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (CalypsoService.CurrentResults.ChrFile != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>原始CHR文件内容</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre style="max-height: 400px; overflow-y: auto;">@CalypsoService.CurrentResults.ChrFile</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        CalypsoService.OnStatusChanged += StateHasChanged;
+        CalypsoService.OnMeasurementFinished += OnMeasurementFinished;
+    }
+
+    private void OnMeasurementFinished(string partNumber)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        CalypsoService.OnStatusChanged -= StateHasChanged;
+        CalypsoService.OnMeasurementFinished -= OnMeasurementFinished;
+    }
+} 

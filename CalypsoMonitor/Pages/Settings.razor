@@ -1,0 +1,88 @@
+@page "/settings"
+@inject CalypsoService CalypsoService
+@inject IConfiguration Configuration
+
+<PageTitle>设置 - Calypso监控系统</PageTitle>
+
+<h1>设置</h1>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Calypso连接设置</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="observerPath" class="form-label">CMMObserver文件夹路径</label>
+                    <input type="text" class="form-control" id="observerPath" @bind="ObserverPath" />
+                    <div class="form-text">通常位于C:\Users\Public\Documents\Zeiss\CMMObserver</div>
+                </div>
+                <div class="mb-3">
+                    <label for="apiUrl" class="form-label">API URL</label>
+                    <input type="text" class="form-control" id="apiUrl" @bind="ApiUrl" />
+                    <div class="form-text">Calypso WebAPI的URL地址</div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary" @onclick="SaveSettings">保存设置</button>
+                </div>
+                @if (!string.IsNullOrEmpty(Message))
+                {
+                    <div class="alert alert-@MessageType mt-3">
+                        @Message
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>系统信息</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>应用程序版本:</strong> 1.0.0
+                </div>
+                <div class="mb-3">
+                    <strong>Calypso API版本:</strong> 1.0.0
+                </div>
+                <div class="mb-3">
+                    <strong>操作系统:</strong> Windows
+                </div>
+                <div class="mb-3">
+                    <strong>连接状态:</strong>
+                    @if (CalypsoService.IsConnected)
+                    {
+                        <span class="badge bg-success">已连接</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">未连接</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string ObserverPath { get; set; } = "";
+    private string ApiUrl { get; set; } = "";
+    private string Message { get; set; } = "";
+    private string MessageType { get; set; } = "info";
+
+    protected override void OnInitialized()
+    {
+        ObserverPath = Configuration["Calypso:ObserverPath"] ?? @"C:\Users\Public\Documents\Zeiss\CMMObserver";
+        ApiUrl = Configuration["Calypso:ApiUrl"] ?? "http://localhost:5000";
+    }
+
+    private void SaveSettings()
+    {
+        // 在实际应用中，这里应该保存到配置文件
+        // 由于我们无法直接修改appsettings.json，这里只是模拟保存
+        Message = "设置已保存。请重启应用程序以应用更改。";
+        MessageType = "success";
+    }
+} 

@@ -1,0 +1,40 @@
+@page
+@model CalypsoMonitor.Pages.ErrorModel
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>错误</title>
+    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+
+<body>
+    <div class="main">
+        <div class="content px-4">
+            <h1 class="text-danger">错误.</h1>
+            <h2 class="text-danger">处理您的请求时发生错误。</h2>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>请求ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+
+            <h3>开发模式</h3>
+            <p>
+                切换到<strong>开发</strong>环境将显示有关发生的错误的更多详细信息。
+            </p>
+            <p>
+                <strong>开发环境不应该在部署的应用程序中启用</strong>，因为它可能会向最终用户显示敏感信息。
+                对于本地调试，通过将环境设置为<strong>开发</strong>并重新启动应用程序来启用开发环境。
+            </p>
+        </div>
+    </div>
+</body>
+
+</html> 

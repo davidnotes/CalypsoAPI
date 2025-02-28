@@ -1,0 +1,115 @@
+@page "/status"
+@inject CalypsoService CalypsoService
+@implements IDisposable
+
+<PageTitle>状态监控 - Calypso监控系统</PageTitle>
+
+<h1>状态监控</h1>
+
+@if (!CalypsoService.IsConnected)
+{
+    <div class="alert alert-warning">
+        <strong>未连接到Calypso!</strong> 请先在首页连接到Calypso。
+    </div>
+}
+else
+{
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>当前状态</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>状态:</strong>
+                        @GetStatusBadge(CalypsoService.CurrentStatus)
+                    </div>
+                    @if (CalypsoService.CurrentPlan != null)
+                    {
+                        <div class="mb-3">
+                            <strong>测量计划:</strong> @CalypsoService.CurrentPlan.FileName
+                        </div>
+                        <div class="mb-3">
+                            <strong>零件编号:</strong> @CalypsoService.CurrentPlan.PartNumber
+                        </div>
+                        <div class="mb-3">
+                            <strong>操作员:</strong> @CalypsoService.CurrentPlan.OperatorId
+                        </div>
+                        <div class="mb-3">
+                            <strong>测量速度:</strong> @CalypsoService.CurrentPlan.Speed
+                        </div>
+                        <div class="mb-3">
+                            <strong>开始时间:</strong> @CalypsoService.CurrentPlan.Date @CalypsoService.CurrentPlan.Time
+                        </div>
+                        <div class="mb-3">
+                            <strong>运行模式:</strong> @CalypsoService.CurrentPlan.RunMode
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">暂无测量计划信息</div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>测量信息</h5>
+                </div>
+                <div class="card-body">
+                    @if (CalypsoService.CurrentMeasurement != null)
+                    {
+                        <div class="mb-3">
+                            <strong>公差状态:</strong>
+                            @if (CalypsoService.CurrentMeasurement.ToleranceState)
+                            {
+                                <span class="badge bg-success">合格</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">不合格</span>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <strong>HDR文件路径:</strong> @CalypsoService.CurrentMeasurement.HdrPath
+                        </div>
+                        <div class="mb-3">
+                            <strong>FET文件路径:</strong> @CalypsoService.CurrentMeasurement.FetPath
+                        </div>
+                        <div class="mb-3">
+                            <strong>CHR文件路径:</strong> @CalypsoService.CurrentMeasurement.ChrPath
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">暂无测量信息</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        CalypsoService.OnStatusChanged += StateHasChanged;
+    }
+
+    private RenderFragment GetStatusBadge(Status status) => status switch
+    {
+        Status.Running => @<span class="badge bg-primary">运行中</span>,
+        Status.Paused => @<span class="badge bg-warning">已暂停</span>,
+        Status.Finished => @<span class="badge bg-success">已完成</span>,
+        Status.Stopped => @<span class="badge bg-secondary">已停止</span>,
+        Status.Exception => @<span class="badge bg-danger">错误</span>,
+        _ => @<span class="badge bg-secondary">未知</span>
+    };
+
+    public void Dispose()
+    {
+        CalypsoService.OnStatusChanged -= StateHasChanged;
+    }
+} 
